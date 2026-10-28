@@ -53,7 +53,7 @@ class OderComplete extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DeliveryStatus(),
+                    builder: (context) => DeliveryStatus(name: name),
                   ),
                 );
                 // Handle button press

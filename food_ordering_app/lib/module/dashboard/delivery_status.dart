@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../common/mini_card.dart';
-import '../../theme/app_theme.dart';
+import '/common/status.dart';
+import '/theme/app_theme.dart';
+import '/common/mini_card.dart';
+import '../home/home_screen.dart';
 
 class DeliveryStatus extends StatelessWidget {
-  const DeliveryStatus({super.key});
+  final String name;
+
+  const DeliveryStatus({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,13 @@ class DeliveryStatus extends StatelessWidget {
         title: Row(
           children: [
             TextButton.icon(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => HomeScreen(name: name)),
+                  (route) => false,
+                );
+              },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.text,
@@ -36,21 +46,21 @@ class DeliveryStatus extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 38, 20, 28),
         child: Column(
           children: [
-            const _StatusRow(
+            const StatusRow(
               image: 'assets/images/order_logo.png',
               backgroundColor: Color(0xFFFFF9E9),
               title: 'Order Taken',
               isDone: true,
             ),
-            const _StatusDivider(),
-            const _StatusRow(
+            const StatusDivider(),
+            const StatusRow(
               image: 'assets/images/bill_logo.png',
               backgroundColor: Color(0xFFF2F0F8),
               title: 'Order Is Being Prepared',
               isDone: true,
             ),
-            const _StatusDivider(),
-            const _StatusRow(
+            const StatusDivider(),
+            const StatusRow(
               image: 'assets/images/delivery_logo.png',
               backgroundColor: Color(0xFFFFF0F1),
               title: 'Order Is Being Delivered',
@@ -67,7 +77,7 @@ class DeliveryStatus extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            const _StatusDivider(height: 44),
+            const StatusDivider(height: 44),
             Row(
               children: [
                 MiniCard(
@@ -90,84 +100,6 @@ class DeliveryStatus extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StatusRow extends StatelessWidget {
-  final String image;
-  final Color backgroundColor;
-  final String title;
-  final String? description;
-  final bool isDone;
-
-  const _StatusRow({
-    required this.image,
-    required this.backgroundColor,
-    required this.title,
-    this.description,
-    required this.isDone,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        MiniCard(image: image, size: 62, backgroundColor: backgroundColor),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: AppTextStyles.body),
-              if (description != null) ...[
-                const SizedBox(height: 6),
-                Text(
-                  description!,
-                  style: const TextStyle(color: AppColors.text, fontSize: 13),
-                ),
-              ],
-            ],
-          ),
-        ),
-        Container(
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: isDone ? const Color(0xFF45D16B) : AppColors.primary,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            isDone ? Icons.check : Icons.phone_in_talk,
-            color: Colors.white,
-            size: 20,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _StatusDivider extends StatelessWidget {
-  final double height;
-
-  const _StatusDivider({this.height = 26});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 29),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(
-            (height / 6).floor(),
-            (_) => Container(width: 3, height: 3, color: AppColors.primary),
-          ),
         ),
       ),
     );
